@@ -19,11 +19,14 @@ Given a concept or theme (and optionally a reference image), output a JSON objec
 - natural_language: 2-3 richly detailed sentences describing the full scene
 - period: time period tag — one of: newest, recent, mid, early, old, or a specific year string like "year 2025"
 - safety: content safety rating — one of: safe, sensitive, nsfw, explicit
-
 When a reference image is provided, extract its visual details (pose, clothing, colors, atmosphere)
 and reflect them faithfully in the tags and natural_language fields.
 
 Return ONLY valid JSON, no markdown fences."""
+
+DEFAULT_NEGATIVE = [
+    "worst quality", "low quality", "score_1", "score_2", "score_3", "artist name",
+]
 
 _MIME_FALLBACK = "image/jpeg"
 _SUPPORTED_MIME = {"image/jpeg", "image/png", "image/webp", "image/gif"}
@@ -83,6 +86,9 @@ class AnimaPrompt:
         if self.natural_language:
             return f"{tag_str}. {self.natural_language}"
         return tag_str
+
+    def build_negative_string(self) -> str:
+        return ", ".join(DEFAULT_NEGATIVE)
 
 
 def image_data_url_from_bytes(image_bytes: bytes, filename: str | None = None) -> str:

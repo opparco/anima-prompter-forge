@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from anima_prompter.prompter import AnimaPrompt, extract_json, image_data_url_from_bytes
+from anima_prompter.prompter import DEFAULT_NEGATIVE, AnimaPrompt, extract_json, image_data_url_from_bytes
 
 
 class TestAnimaPrompter(unittest.TestCase):
@@ -53,6 +53,12 @@ class TestAnimaPrompter(unittest.TestCase):
         result = prompt.build_string()
         self.assertIn("newest", result)
         self.assertIn("safe", result)
+
+    def test_build_negative_string_returns_defaults(self):
+        result = AnimaPrompt(subject="1girl").build_negative_string()
+        for tag in DEFAULT_NEGATIVE:
+            self.assertIn(tag, result)
+        self.assertTrue(result.startswith(DEFAULT_NEGATIVE[0]))
 
     def test_image_data_url_uses_png_mime(self):
         data_url = image_data_url_from_bytes(b"abc", "reference.png")
