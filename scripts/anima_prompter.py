@@ -37,7 +37,7 @@ class AnimaPrompterScript(scripts.Script):
         with InputAccordion(False, label="Anima Prompter", elem_id=self.elem_id("panel")):
             concept = gr.Textbox(
                 label="Concept",
-                lines=3,
+                lines=1,
                 placeholder="Describe the scene or theme to expand into an Anima prompt.",
                 elem_id=self.elem_id("concept"),
             )
@@ -48,6 +48,60 @@ class AnimaPrompterScript(scripts.Script):
                 elem_id=self.elem_id("reference_image"),
             )
             generate_button = gr.Button("Generate Prompt", variant="secondary", elem_id=self.elem_id("generate"))
+            gr.Markdown("**Post-process**")
+            period_mode = gr.Radio(
+                choices=["Generated", "Fixed", "None"],
+                value="Generated",
+                label="Period",
+                elem_id=self.elem_id("period_mode"),
+            )
+            fixed_period = gr.Dropdown(
+                choices=["newest", "recent", "mid", "early", "old"],
+                value="newest",
+                label="Fixed period",
+                visible=False,
+                elem_id=self.elem_id("fixed_period"),
+            )
+            period_mode.change(
+                fn=lambda mode: gr.update(visible=(mode == "Fixed")),
+                inputs=[period_mode],
+                outputs=[fixed_period],
+            )
+            safety_mode = gr.Radio(
+                choices=["Generated", "Fixed"],
+                value="Generated",
+                label="Safety",
+                elem_id=self.elem_id("safety_mode"),
+            )
+            fixed_safety = gr.Dropdown(
+                choices=["safe", "sensitive", "nsfw", "explicit"],
+                value="safe",
+                label="Fixed safety",
+                visible=False,
+                elem_id=self.elem_id("fixed_safety"),
+            )
+            safety_mode.change(
+                fn=lambda mode: gr.update(visible=(mode == "Fixed")),
+                inputs=[safety_mode],
+                outputs=[fixed_safety],
+            )
+            artist_mode = gr.Radio(
+                choices=["Generated", "Fixed", "None"],
+                value="Generated",
+                label="Artist tags",
+                elem_id=self.elem_id("artist_mode"),
+            )
+            fixed_artists = gr.Textbox(
+                label="Fixed artists (comma-separated)",
+                placeholder="e.g. John Doe, Jane Smith",
+                visible=False,
+                elem_id=self.elem_id("fixed_artists"),
+            )
+            artist_mode.change(
+                fn=lambda mode: gr.update(visible=(mode == "Fixed")),
+                inputs=[artist_mode],
+                outputs=[fixed_artists],
+            )
             generated_prompt = gr.Textbox(
                 label="Generated Prompt",
                 lines=6,
@@ -71,13 +125,13 @@ class AnimaPrompterScript(scripts.Script):
 
         generate_button.click(
             fn=self._generate_prompt,
-            inputs=[concept, reference_image, neg_prompt_output],
+            inputs=[concept, reference_image, neg_prompt_output, period_mode, fixed_period, safety_mode, fixed_safety, artist_mode, fixed_artists],
             outputs=[prompt_output, neg_prompt_output, generated_prompt, status, raw_json],
         )
 
-        return [concept, reference_image, generated_prompt, status, raw_json]
+        return [concept, reference_image, generated_prompt, status, raw_json, period_mode, fixed_period, safety_mode, fixed_safety, artist_mode, fixed_artists]
 
-    def _generate_prompt(self, concept: str, reference_image: bytes | None, current_neg_prompt: str | None):
+    def _generate_prompt(self, concept: str, reference_image: bytes | None, current_neg_prompt: str | None, period_mode: str, fixed_period: str, safety_mode: str, fixed_safety: str, artist_mode: str, fixed_artists: str):
         concept = (concept or "").strip()
         if not concept:
             message = self._status("Enter a concept before generating.", error=True)
@@ -100,6 +154,19 @@ class AnimaPrompterScript(scripts.Script):
         except Exception as error:
             message = self._status(f"Unexpected error: {error}", error=True)
             return gr.update(), gr.update(), gr.update(value=""), message, gr.update(value="")
+
+        if period_mode == "None":
+            prompt.period = None
+        elif period_mode == "Fixed":
+            prompt.period = fixed_period
+
+        if safety_mode == "Fixed":
+            prompt.safety = fixed_safety
+
+        if artist_mode == "None":
+            prompt.artists = []
+        elif artist_mode == "Fixed":
+            prompt.artists = [a.strip() for a in (fixed_artists or "").split(",") if a.strip()]
 
         prompt_text = prompt.build_string()
 
