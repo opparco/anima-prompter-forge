@@ -7,7 +7,6 @@ import urllib.error
 import urllib.request
 from dataclasses import dataclass, field
 
-
 SYSTEM_PROMPT = """\
 You are a creative prompt engineer for the Anima anime image generation model.
 Given a concept or theme (and optionally a reference image), output a JSON object with these fields:
@@ -25,7 +24,12 @@ and reflect them faithfully in the tags and natural_language fields.
 Return ONLY valid JSON, no markdown fences."""
 
 DEFAULT_NEGATIVE = [
-    "worst quality", "low quality", "score_1", "score_2", "score_3", "artist name",
+    "worst quality",
+    "low quality",
+    "score_1",
+    "score_2",
+    "score_3",
+    "artist name",
 ]
 
 _MIME_FALLBACK = "image/jpeg"
@@ -172,10 +176,7 @@ class LMStudioPrompter:
         except urllib.error.HTTPError as error:
             response_text = error.read().decode("utf-8", errors="replace")
             if error.code == 400 and ref_image_bytes is not None:
-                raise LMStudioError(
-                    "LM Studio returned 400 for a vision request. Load a vision-capable model or remove the reference image. "
-                    f"Server said: {response_text}"
-                ) from error
+                raise LMStudioError("LM Studio returned 400 for a vision request. Load a vision-capable model or remove the reference image. " f"Server said: {response_text}") from error
             raise LMStudioError(f"LM Studio returned HTTP {error.code}: {response_text}") from error
         except urllib.error.URLError as error:
             raise LMStudioError(f"LM Studio request failed: {error.reason}") from error
