@@ -68,7 +68,7 @@ Example:
 newest, score_9, score_8, score_7, masterpiece, best quality, safe, 1girl, @john doe, @jane smith, long hair, blue eyes, cherry blossoms, sunset. She sits beneath a canopy of falling petals, a worn paperback open in her hands.
 ```
 
-- `period`: `newest` / `recent` / `mid` / `early` / `old` or `year YYYY`
+- `period`: `newest` / `recent` / `mid` / `early` / `old` (the LLM may also generate `year YYYY`; the Fixed dropdown covers the five keyword values only)
 - `safety`: `safe` / `sensitive` / `nsfw` / `explicit`
 - Artist names are prefixed with `@` (duplicates deduplicated automatically)
 - Tag underscores are converted to spaces
