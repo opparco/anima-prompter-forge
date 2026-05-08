@@ -52,7 +52,7 @@ These controls let you override specific fields after the LLM generates the base
 | **Safety** | Generated / Fixed | Use the LLM's rating or force a specific level |
 | **Artist tags** | Generated / Fixed / None | Use LLM-selected artists, provide your own list, or remove all artist tags |
 
-When **Period** or **Artist tags** is set to **Fixed**, a secondary control appears to enter the specific value.
+When **Period** or **Safety** is set to **Fixed**, a dropdown appears to select the specific value. When **Artist tags** is set to **Fixed**, a text field appears to enter a comma-separated list of artists.
 
 ## Generated Prompt Format
 
