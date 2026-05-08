@@ -2,7 +2,7 @@ import html
 import json
 import gradio as gr
 
-from anima_prompter import DEFAULT_NEGATIVE, LMStudioError, LMStudioPrompter
+from anima_prompter import LMStudioError, LMStudioPrompter
 from modules import script_callbacks, scripts, shared
 from modules.ui_components import InputAccordion
 
