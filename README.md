@@ -1,6 +1,6 @@
 # Anima Prompter Forge
 
-An AlwaysVisible extension for [SD WebUI Forge Neo](https://github.com/Haoming02/sd-webui-forge-classic/tree/neo) (the `neo` branch of sd-webui-forge-classic, also known as forge-neo) that generates structured [Anima](https://civitai.com/models/676675)-style prompts from a concept string and optional reference image via a local [LM Studio](https://lmstudio.ai/) server, then writes the result directly into the active prompt box.
+An AlwaysVisible extension for [SD WebUI Forge Neo](https://github.com/Haoming02/sd-webui-forge-classic/tree/neo) that generates structured [Anima](https://civitai.com/models/676675)-style prompts from a concept string and optional reference image via [LM Studio](https://lmstudio.ai/), then writes the result into the active prompt box.
 
 ## Features
 
@@ -14,7 +14,7 @@ An AlwaysVisible extension for [SD WebUI Forge Neo](https://github.com/Haoming02
 ## Requirements
 
 - [SD WebUI Forge Neo](https://github.com/Haoming02/sd-webui-forge-classic/tree/neo) (`neo` branch)
-- [LM Studio](https://lmstudio.ai/) running locally (or on your LAN) with a model loaded
+- [LM Studio](https://lmstudio.ai/) running locally or on your LAN with a model loaded
   - Any instruction-following model works for text-only mode
   - A **vision-capable model** (e.g. LLaVA, Qwen-VL, Pixtral) is required when uploading a reference image
 
@@ -40,7 +40,7 @@ git clone https://github.com/opparco/anima-prompter-forge
 5. Optionally upload a **Reference Image** to guide the visual style.
 6. Adjust the **Post-process** overrides if needed (see below).
 7. Click **Generate Prompt** — the positive prompt box and (if empty) the negative prompt box are filled automatically.
-8. Click the normal **Generate** button to create the image.
+8. Click **Generate** to create the image.
 
 ## Post-process Overrides
 
@@ -52,7 +52,7 @@ These controls let you override specific fields after the LLM generates the base
 | **Safety** | Generated / Fixed | Use the LLM's rating or force a specific level |
 | **Artist tags** | Generated / Fixed / None | Use LLM-selected artists, provide your own list, or remove all artist tags |
 
-When **Period** or **Safety** is set to **Fixed**, a dropdown appears to select the specific value. When **Artist tags** is set to **Fixed**, a text field appears to enter a comma-separated list of artists.
+Setting **Period** or **Safety** to **Fixed** shows a dropdown; setting **Artist tags** to **Fixed** shows a text field for a comma-separated list.
 
 ## Generated Prompt Format
 
@@ -68,7 +68,7 @@ Example:
 newest, score_9, score_8, score_7, masterpiece, best quality, safe, 1girl, @john doe, @jane smith, long hair, blue eyes, cherry blossoms, sunset. She sits beneath a canopy of falling petals, a worn paperback open in her hands.
 ```
 
-- `period`: `newest` / `recent` / `mid` / `early` / `old` (the LLM may also generate `year YYYY`; the Fixed dropdown covers the five keyword values only)
+- `period`: `newest` / `recent` / `mid` / `early` / `old` (the LLM may also output `year YYYY`; the **Fixed** dropdown covers the five keyword forms only)
 - `safety`: `safe` / `sensitive` / `nsfw` / `explicit`
 - Artist names are prefixed with `@` (duplicates deduplicated automatically)
 - Tag underscores are converted to spaces
@@ -104,7 +104,7 @@ ruff check .
 ### Architecture
 
 ```
-anima_prompter/prompter.py   — pure Python core (no WebUI/Gradio dependencies)
+anima_prompter/prompter.py   — pure Python core (no Gradio/WebUI dependencies)
 scripts/anima_prompter.py    — Gradio/WebUI integration layer
 tests/test_anima_prompter.py — unit tests
 ```
