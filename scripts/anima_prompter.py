@@ -138,7 +138,7 @@ class AnimaPrompterScript(scripts.Script):
             return gr.update(), gr.update(), gr.update(value=""), message, gr.update(value="")
 
         prompter = LMStudioPrompter(
-            base_url=shared.opts.data.get("anima_prompter_lmstudio_url", "http://192.168.11.21:1234"),
+            base_url=shared.opts.data.get("anima_prompter_lmstudio_url", "http://localhost:1234"),
             timeout=float(shared.opts.data.get("anima_prompter_timeout", 60.0)),
         )
 
@@ -199,7 +199,7 @@ def on_ui_settings():
     shared.opts.add_option(
         "anima_prompter_lmstudio_url",
         shared.OptionInfo(
-            default="http://192.168.11.21:1234",
+            default="http://localhost:1234",
             label="LM Studio base URL",
             component=gr.Textbox,
             section=section,

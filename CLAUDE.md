@@ -55,7 +55,7 @@ User input (concept str + optional image bytes)
 
 Registered via `script_callbacks.on_ui_settings`. Read at call time from `shared.opts.data` — not cached at startup — so changes in Settings take effect without restart:
 
-- `anima_prompter_lmstudio_url` (default `http://192.168.11.21:1234`)
+- `anima_prompter_lmstudio_url` (default `http://localhost:1234`)
 - `anima_prompter_timeout` (default `60.0` s)
 
 ### `AnimaPrompt.build_string()` format
