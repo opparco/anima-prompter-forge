@@ -1,6 +1,6 @@
 # Anima Prompter Forge
 
-An AlwaysVisible extension for [Stable Diffusion WebUI Forge](https://github.com/lllyasviel/stable-diffusion-webui-forge) that generates structured [Anima](https://civitai.com/models/676675)-style prompts from a concept string and optional reference image via a local [LM Studio](https://lmstudio.ai/) server, then writes the result directly into the active prompt box.
+An AlwaysVisible extension for [SD WebUI Forge Neo](https://github.com/Haoming02/sd-webui-forge-classic/tree/neo) (the `neo` branch of sd-webui-forge-classic, also known as forge-neo) that generates structured [Anima](https://civitai.com/models/676675)-style prompts from a concept string and optional reference image via a local [LM Studio](https://lmstudio.ai/) server, then writes the result directly into the active prompt box.
 
 ## Features
 
@@ -13,7 +13,7 @@ An AlwaysVisible extension for [Stable Diffusion WebUI Forge](https://github.com
 
 ## Requirements
 
-- [Stable Diffusion WebUI Forge](https://github.com/lllyasviel/stable-diffusion-webui-forge) (or a compatible fork)
+- [SD WebUI Forge Neo](https://github.com/Haoming02/sd-webui-forge-classic/tree/neo) (`neo` branch)
 - [LM Studio](https://lmstudio.ai/) running locally (or on your LAN) with a model loaded
   - Any instruction-following model works for text-only mode
   - A **vision-capable model** (e.g. LLaVA, Qwen-VL, Pixtral) is required when uploading a reference image
@@ -27,7 +27,7 @@ An AlwaysVisible extension for [Stable Diffusion WebUI Forge](https://github.com
 Or clone directly into your extensions folder:
 
 ```bash
-cd stable-diffusion-webui-forge/extensions
+cd sd-webui-forge-classic/extensions
 git clone https://github.com/opparco/anima-prompter-forge
 ```
 
