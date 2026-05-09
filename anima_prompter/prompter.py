@@ -143,6 +143,7 @@ class LMStudioPrompter:
         concept: str,
         ref_image_bytes: bytes | None = None,
         ref_image_name: str | None = None,
+        temperature: float = 0.9,
     ) -> tuple[AnimaPrompt, dict]:
         if ref_image_bytes is not None:
             user_content = [
@@ -160,7 +161,7 @@ class LMStudioPrompter:
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": user_content},
             ],
-            "temperature": 0.9,
+            "temperature": temperature,
         }
 
         request = urllib.request.Request(
