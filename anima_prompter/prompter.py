@@ -5,7 +5,8 @@ import mimetypes
 import re
 import urllib.error
 import urllib.request
-from dataclasses import dataclass, field
+
+from pydantic import BaseModel, ConfigDict, Field
 
 SYSTEM_PROMPT = """\
 You are a creative prompt engineer for the Anima anime image generation model.
@@ -40,35 +41,23 @@ class LMStudioError(RuntimeError):
     pass
 
 
-@dataclass
-class AnimaPrompt:
+class AnimaPrompt(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+
     subject: str = "1girl"
     character: str | None = None
     series: str | None = None
-    artists: list[str] = field(default_factory=list)
-    tags: list[str] = field(default_factory=list)
+    artists: list[str] = Field(default_factory=list)
+    tags: list[str] = Field(default_factory=list)
     natural_language: str | None = None
     period: str | None = "newest"
-    scores: list[str] = field(default_factory=lambda: ["score_7", "score_8", "score_9"])
-    quality: list[str] = field(default_factory=lambda: ["masterpiece", "best quality"])
+    scores: list[str] = ["score_7", "score_8", "score_9"]
+    quality: list[str] = ["masterpiece", "best quality"]
     safety: str = "safe"
 
     @classmethod
     def from_dict(cls, data: dict) -> "AnimaPrompt":
-        allowed = {
-            "subject",
-            "character",
-            "series",
-            "artists",
-            "tags",
-            "natural_language",
-            "period",
-            "scores",
-            "quality",
-            "safety",
-        }
-        filtered = {key: value for key, value in data.items() if key in allowed and value is not None}
-        return cls(**filtered)
+        return cls.model_validate({k: v for k, v in data.items() if v is not None})
 
     def build_string(self) -> str:
         processed_artists = [f"@{artist.lstrip('@')}" for artist in self.artists]
@@ -143,6 +132,7 @@ class LMStudioPrompter:
         concept: str,
         ref_image_bytes: bytes | None = None,
         ref_image_name: str | None = None,
+        temperature: float = 0.9,
     ) -> tuple[AnimaPrompt, dict]:
         if ref_image_bytes is not None:
             user_content = [
@@ -160,7 +150,7 @@ class LMStudioPrompter:
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": user_content},
             ],
-            "temperature": 0.9,
+            "temperature": temperature,
         }
 
         request = urllib.request.Request(
