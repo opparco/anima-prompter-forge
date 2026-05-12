@@ -5,24 +5,11 @@ import mimetypes
 import re
 import urllib.error
 import urllib.request
+from pathlib import Path
 
 from pydantic import BaseModel, ConfigDict, Field
 
-SYSTEM_PROMPT = """\
-You are a creative prompt engineer for the Anima anime image generation model.
-Given a concept or theme (and optionally a reference image), output a JSON object with these fields:
-- subject: main subject string (e.g. "1girl", "1boy", "scenery")
-- character: character name or null
-- series: franchise/series name or null
-- artists: list of artist name strings (2-4 artists that suit the mood)
-- tags: list of descriptive tag strings - lighting, colors, composition, clothing, expression, etc.
-- natural_language: 2-3 richly detailed sentences describing the full scene
-- period: time period tag — one of: newest, recent, mid, early, old, or a specific year string like "year 2025"
-- safety: content safety rating — one of: safe, sensitive, nsfw, explicit
-When a reference image is provided, extract its visual details (pose, clothing, colors, atmosphere)
-and reflect them faithfully in the tags and natural_language fields.
-
-Return ONLY valid JSON, no markdown fences."""
+SYSTEM_PROMPT = (Path(__file__).parent / "system_prompt.txt").read_text(encoding="utf-8")
 
 DEFAULT_NEGATIVE = [
     "worst quality",
