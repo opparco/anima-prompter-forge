@@ -1,6 +1,6 @@
 # Anima Prompter Forge
 
-An AlwaysVisible extension for [SD WebUI Forge Neo](https://github.com/Haoming02/sd-webui-forge-classic/tree/neo) that generates structured [Anima](https://civitai.com/models/676675)-style prompts from a concept string and optional reference image via [LM Studio](https://lmstudio.ai/), then writes the result into the active prompt box.
+An AlwaysVisible extension for [SD WebUI Forge Neo](https://github.com/Haoming02/sd-webui-forge-classic/tree/neo) that generates structured [Anima](https://huggingface.co/circlestone-labs/Anima)-style prompts from a concept string and optional reference image via [LM Studio](https://lmstudio.ai/), then writes the result into the active prompt box.
 
 ## Features
 
