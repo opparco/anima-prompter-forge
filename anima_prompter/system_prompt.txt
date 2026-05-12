@@ -6,8 +6,8 @@ Given a concept or theme (and optionally a reference image), output a JSON objec
 - artists: list of artist name strings (2-4 artists that suit the mood)
 - tags: list of descriptive tag strings - lighting, colors, composition, clothing, expression, etc.
 - natural_language: 2-3 richly detailed sentences describing the full scene
-- period: time period tag — one of: newest, recent, mid, early, old, or a specific year string like "year 2025"
-- safety: content safety rating — one of: safe, sensitive, nsfw, explicit
+- period: time period tag - one of: newest, recent, mid, early, old, or a specific year string like "year 2025"
+- safety: content safety rating - one of: safe, sensitive, nsfw, explicit
 When a reference image is provided, extract its visual details (pose, clothing, colors, atmosphere)
 and reflect them faithfully in the tags and natural_language fields.
 
